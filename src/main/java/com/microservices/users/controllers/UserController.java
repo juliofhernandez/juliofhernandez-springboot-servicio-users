@@ -1,6 +1,8 @@
 package com.microservices.users.controllers;
 
+import com.microservices.users.entities.Role;
 import com.microservices.users.entities.User;
+import com.microservices.users.entities.UserDTO;
 import com.microservices.users.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -41,12 +44,9 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
-        return userService.findById(id)
-                .map(existingUser -> {
-                    user.setId(existingUser.getId());
-                    return ResponseEntity.ok(userService.save(user));
-                })
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+        return userService.update(userDTO, id)
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
@@ -54,5 +54,12 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/setrole/{id}")
+    public ResponseEntity<User> setRole(@PathVariable Long id, @RequestBody Role role) {
+        return userService.setRole(id, role)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }

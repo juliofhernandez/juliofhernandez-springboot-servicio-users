@@ -20,7 +20,7 @@ public class  User {
     private String password;
 
     @Column(nullable = false)
-    private Boolean enabled;
+    private boolean enabled;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -58,11 +58,11 @@ public class  User {
         this.password = password;
     }
 
-    public Boolean getEnabled() {
+    public boolean getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(Boolean enabled) {
+    public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
